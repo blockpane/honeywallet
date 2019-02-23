@@ -38,3 +38,5 @@ attacks, and has a simple dashboard showing the data.
 ### Running:
 Can be brought up using `run.sh` in this directory
 
+This software is made available under the _MIT License_ please see
+the `LICENSE` file for details.
