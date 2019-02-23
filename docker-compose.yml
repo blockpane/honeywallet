@@ -1,0 +1,69 @@
+---
+
+version: '2.2'
+
+services:
+  geth:
+    build:
+      context: geth
+    ports:
+      - "30303:30303"
+    networks:
+      eth:
+        ipv4_address: 10.99.172.2
+    restart: always
+    stop_grace_period: 3m
+    stop_signal: SIGINT
+    container_name: "geth"
+    expose:
+      - "30303"
+      - "8545"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "10"
+    volumes:
+      - /opt/honeywallet/geth:/opt/geth
+    # Change the command to specify how geth will run:
+    #      light: run a light node -- a few gigs of space
+    #      fast: run a full regular node -- couple hundred gigs of space, and more attack data
+    command: 'light'
+
+  proxy:
+    build:
+      context: ./goproxy
+    ports:
+      - "8545:8545"
+    networks:
+      eth:
+        ipv4_address: 10.99.172.3
+    restart: always
+    container_name: "goproxy"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "10"
+    volumes:
+      - /opt/honeywallet/data:/opt/goproxy/logs
+
+  stats:
+    build:
+      context: ./stats
+    ports:
+      - "80:80"
+    networks:
+       eth:
+         ipv4_address: 10.99.172.4
+    restart: always
+    container_name: "nginx"
+    volumes:
+      - /opt/honeywallet/data:/usr/share/nginx/html/data
+
+networks:
+  eth:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.99.172.0/24

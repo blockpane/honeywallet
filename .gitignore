@@ -1,0 +1,6 @@
+.idea
+logs.db
+stats.json
+data/
+build/
+
