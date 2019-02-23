@@ -30,7 +30,7 @@
                                 <h3 align="center" class="large text-white">Graph Loading ...</h3>
                                 <p align="center" class="text-white">[ ether Transfer Attempts by Destination Ethereum Account &#8227; IP Address ]</p>
                                 <p align="center" class="small text-white">click to highlight connections, double click to get details</p>
-                                <img src="w.png" width="1" height="700">
+                                <img src="./assets/w.png" width="1" height="700">
                             </div>
                         </span>
                     </b-tab>

@@ -59,7 +59,7 @@ services:
     restart: always
     container_name: "nginx"
     volumes:
-      - /opt/honeywallet/data:/usr/share/nginx/html/data
+      - /opt/honeywallet/data:/var/www/html/data
 
 networks:
   eth:

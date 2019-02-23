@@ -260,20 +260,21 @@ func DumpGraph(db *bolt.DB) (dotGraph string) {
 	}
 	ninety, _ := stats.Percentile(hits, 90.0)
 	top, _ := stats.Percentile(hits, 99.0)
+	// build our IP nodes:
+	for ip := range ipCount {
+		ipColor := `#bababa`
+		switch {
+		case float64(ipRank[ip]) > top:
+			ipColor = `#bf1c1c,fontcolor=white`
+		case float64(ipRank[ip]) > ninety:
+			ipColor = `#d3931b`
+		}
+		dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [layer=ip,weight=%d,value=%d,color=%s];\n", ip, ipRank[ip] ^ 2, ipRank[ip], ipColor)
+	}
+	// now accounts and links
 	for k, v := range addrs {
 		if len(v.Ips) == 0 {
 			continue
-		}
-		// build our IP nodes:
-		for ip := range ipCount {
-			ipColor := `#bababa`
-			switch {
-			case float64(ipRank[ip]) > top:
-				ipColor = `#bf1c1c,fontcolor=white`
-			case float64(ipRank[ip]) > ninety:
-				ipColor = `#d3931b`
-			}
-			dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [layer=ip,weight=%d,value=%d,color=%s];\n", ip, ipRank[ip] ^ 2, ipRank[ip], ipColor)
 		}
 		color := `"#494949",fontcolor="#afbbbf"`
 		switch {
@@ -302,11 +303,11 @@ func DumpGraph(db *bolt.DB) (dotGraph string) {
 
 func statsWorker(db *bolt.DB) {
 	for {
-		g, err := os.Create(`/opt/goproxy/logs/ip-account.gv`)
+		g, err := os.OpenFile(`/opt/goproxy/logs/ip-account.gv`, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
 		if err != nil {
 			log.Println(err)
 		}
-		f, err := os.Create(`/opt/goproxy/logs/stats.json`)
+		f, err := os.OpenFile(`/opt/goproxy/logs/stats.json`, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
 		if err != nil {
 			log.Println(err)
 		}
