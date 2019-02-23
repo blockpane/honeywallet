@@ -6,9 +6,9 @@ RUN mkdir /opt/goproxy && \
     apt-get update; apt-get install -y git golang curl jq
 
 ENV GOPATH /opt
-RUN mkdir -p /opt/src/gitlab.com/blockpane/rpc-honeywallet/goproxy
-WORKDIR /opt/src/gitlab.com/blockpane/rpc-honeywallet/goproxy
-COPY . /opt/src/gitlab.com/blockpane/rpc-honeywallet/goproxy
+RUN mkdir -p /opt/src/gitlab.com/blockpane/honeywallet/goproxy
+WORKDIR /opt/src/gitlab.com/blockpane/honeywallet/goproxy
+COPY . /opt/src/gitlab.com/blockpane/honeywallet/goproxy
 RUN go get && go build -ldflags '-s -w' -o /tmp/goproxy ./cmd/main.go
 
 # Second stage of build, doing it this way makes for a very small container
