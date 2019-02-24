@@ -275,8 +275,8 @@ export default {
                        avoidOverlap: 0.75
                    },
                    timestep: 0.15,
-                   maxVelocity: 1000,
-                   minVelocity: 750
+                   maxVelocity: 1250,
+                   minVelocity: 500
                 },
                 interaction: {
                     hover: true

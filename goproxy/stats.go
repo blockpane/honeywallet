@@ -269,7 +269,7 @@ func DumpGraph(db *bolt.DB) (dotGraph string) {
 		case float64(ipRank[ip]) > ninety:
 			ipColor = `#d3931b`
 		}
-		dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [layer=ip,weight=%d,value=%d,color=%s];\n", ip, ipRank[ip] ^ 2, ipRank[ip], ipColor)
+		dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [label=%s,layer=ip,weight=%d,value=%d,color=%s];\n", ip, ip, ipRank[ip] ^ 2, ipRank[ip], ipColor)
 	}
 	// now accounts and links
 	for k, v := range addrs {
@@ -283,7 +283,7 @@ func DumpGraph(db *bolt.DB) (dotGraph string) {
 		case addrLinkCount[k] > 1:
 			color = `"#efa51a"`
 		}
-		dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [layer=addr,shape=box,fillcolor=%s];\n", k, color)
+		dotGraph = dotGraph + fmt.Sprintf("    \"%s\" [label=\"%s\",layer=addr,shape=box,fillcolor=%s];\n", k, k, color)
 		// now traverse again for links
 		for ip := range v.Ips {
 			ipColor := `#bababa`

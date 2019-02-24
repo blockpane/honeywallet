@@ -1,9 +1,12 @@
 FROM ubuntu
 RUN apt-get update && \
 	apt-get -y dist-upgrade && \
-	apt-get -y install nginx nodejs npm && \
+	apt-get -y install nginx curl sudo gpg && \
 	apt-get -y autoremove && \
 	apt-get clean
+
+RUN curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash - && \
+    sudo apt-get install -y nodejs && apt-get clean
 
 COPY ./ /var/tmp/build/
 WORKDIR /var/tmp/
