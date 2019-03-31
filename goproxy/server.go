@@ -132,13 +132,11 @@ func FakeResponse(request *fastjson.Value) (body []byte, ok bool) {
 }
 
 func ProxyRequest(geth string, body []byte) (resp []byte, err error) {
-	client := &http.Client{
-		Timeout: time.Second * 10,
-	}
-	reply, err := client.Post(geth, `application/json`, bytes.NewReader(body))
+	reply, err := Client.Post(geth, `application/json`, bytes.NewReader(body))
 	if err != nil {
 		return
 	}
+	defer reply.Body.Close()
 	return ioutil.ReadAll(reply.Body)
 }
 
@@ -173,3 +171,4 @@ func BlockPersistent(ip string) bool {
 	IPRateLimitChannel <- IpUpdate{Ip: ip, Action: "update"}
 	return false
 }
+
