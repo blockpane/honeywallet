@@ -213,6 +213,44 @@ func DumpStats(db *bolt.DB) (body []byte) {
 	return j
 }
 
+func DumpIps(db *bolt.DB) (body string) {
+	// addresses
+	ipBytes := make(map[string][]byte)
+	_ = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("ip"))
+		c := b.Cursor()
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			ipBytes[string(k)] = v
+		}
+		return nil
+	})
+	ips := make(map[string]*IpAddress)
+	for k, v := range ipBytes {
+		i := &IpAddress{}
+		_ = json.Unmarshal(v, i)
+		ips[k] = i
+	}
+	for k, v := range ips {
+		var a IpLog
+		for addr := range v.Accounts {
+			a.Addrs = append(a.Addrs, addr)
+		}
+		for method := range v.Methods {
+			a.Methods = append(a.Methods, method)
+		}
+		t, err := time.Parse("2006-01-02 15:04:05.000000000 -0700 MST", v.LastSeen)
+		if err != nil {
+			a.LastSeen = time.Now().Unix()
+		} else {
+			a.LastSeen = t.Unix()
+		}
+		a.Ip = k
+		l, _ := json.Marshal(a)
+		body = body + string(l) + "\n"
+	}
+	return
+}
+
 func DumpGraph(db *bolt.DB) (dotGraph string) {
 	dotGraph = "graph IP {\nlayers=\"ip:addr:link\";\n"
 	ipBytes := make(map[string][]byte)
@@ -311,6 +349,12 @@ func statsWorker(db *bolt.DB) {
 		if err != nil {
 			log.Println(err)
 		}
+		a, err := os.OpenFile(`/opt/goproxy/logs/addrs.json`, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
+		if err != nil {
+			log.Println(err)
+		}
+		_, _ = a.WriteString(DumpIps(db))
+		_ = a.Close()
 		_, _ = g.WriteString(DumpGraph(db))
 		_ = g.Close()
 		_, _ = f.WriteString(string(DumpStats(db)))
@@ -318,3 +362,4 @@ func statsWorker(db *bolt.DB) {
 		time.Sleep(time.Minute * 2)
 	}
 }
+

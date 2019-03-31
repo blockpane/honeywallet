@@ -229,6 +229,13 @@ type Address struct {
 	LastSeen string         `json:"last_seen"`
 }
 
+type IpLog struct {
+	Ip       string   `json:"ip"`
+	Addrs    []string `json:"addrs"`
+	Methods  []string `json:"methods"`
+	LastSeen int64    `json:"last_seen"`
+}
+
 type resultsStub struct {
 	Method string        `json:"method"`
 	Params []*paramsStub `json:"params"`
@@ -248,3 +255,4 @@ type IpUpdate struct {
 	Ip     string
 	Action string
 }
+

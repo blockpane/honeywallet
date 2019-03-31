@@ -30,7 +30,6 @@
                                 <h3 align="center" class="large text-white">Graph Loading ...</h3>
                                 <p align="center" class="text-white">[ ether Transfer Attempts by Destination Ethereum Account &#8227; IP Address ]</p>
                                 <p align="center" class="small text-white">click to highlight connections, double click to get details</p>
-                                <img src="./assets/w.png" width="1" height="700">
                             </div>
                         </span>
                     </b-tab>
@@ -151,7 +150,7 @@
                     </b-tab>
                     <b-tab title="Raw Data">
                         <p align="center">
-                            <a href="/data/attacks.json">Download Full attack log</a> | <a href="/data/ip-account.gv">Download Graph DOT File</a> | <a href="/data/stats.json">Download Summary Data</a><br />
+                            <a href="/data/attacks.json">Download Full attack log</a> | <a href="/data/ip-account.gv">Download Graph DOT File</a> | <a href="/data/addrs.json">Download IP Address Data</a> | <a href="/data/stats.json">Download Summary Data</a><br />
                         </p>
                         <h5>Summary Data:</h5>
                         <div class="badge-light">
@@ -256,11 +255,10 @@ export default {
                     borderWidth: 0.3,
                     margin: 1,
                     color:{
-                        //border: '#4a5560',
                         border: '#000000',
                         highlight:{
                             border: '#a33434',
-                            background: '#af2323'
+                            background: '#00960c'
                         }
                     }
                 },
