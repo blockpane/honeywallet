@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.com/blockpane/honeywallet/goproxy"
+	"github.com/blockpane/honeywallet/goproxy"
 	"log"
 	"net/http"
 	"syscall"

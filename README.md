@@ -1,8 +1,6 @@
 # Honeywallet
 
-**Warning: this is pre-alpha quality software, _use at your own
-risk._ It has not been audited and exposes potentially 
-dangerous API calls to the internet.**
+**This is pretty outdated and not likely to work anymore, but I'll keep it around for historical reference**
 
 This a tool for logging attacks against a
 publicly accessible geth API endpoint. 
